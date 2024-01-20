@@ -33,25 +33,32 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     if (m_controller.getXButtonPressed()) {
       m_drive.setState(TankDrive.TankState.kTankVoltage);
-      Double rightVolts =
-          ((Math.abs(m_controller.getRightY()) > 0.05) ? m_controller.getRightY() : 0)
-              * RobotController.getBatteryVoltage();
-      Double leftVolts =
-          ((Math.abs(m_controller.getLeftY()) > 0.05) ? m_controller.getLeftY() : 0)
-              * RobotController.getBatteryVoltage();
-      m_drive.setVoltage(rightVolts, leftVolts);
     }
 
     if (m_controller.getYButtonPressed()) {
       m_drive.setState(TankDrive.TankState.kTankSpeed);
-      Double rightSpeed =
-          (Math.abs(m_controller.getRightY()) > 0.05) ? m_controller.getRightY() : 0;
-      Double leftSpeed = (Math.abs(m_controller.getLeftY()) > 0.05) ? m_controller.getLeftY() : 0;
-      m_drive.setSpeed(rightSpeed, leftSpeed);
     }
 
     if (m_controller.getBButtonPressed()) {
       m_drive.setState(TankDrive.TankState.kIdle);
+    }
+
+    switch (m_drive.getState()) {
+      case kIdle:
+        break;
+      case kTankSpeed:
+        Double rightSpeed =
+            (Math.abs(m_controller.getRightY()) > 0.05) ? m_controller.getRightY() : 0;
+        Double leftSpeed = (Math.abs(m_controller.getLeftY()) > 0.05) ? m_controller.getLeftY() : 0;
+        m_drive.setSpeed(rightSpeed, leftSpeed);
+      case kTankVoltage:
+        Double rightVolts =
+            ((Math.abs(m_controller.getRightY()) > 0.05) ? m_controller.getRightY() : 0)
+                * RobotController.getBatteryVoltage();
+        Double leftVolts =
+            ((Math.abs(m_controller.getLeftY()) > 0.05) ? m_controller.getLeftY() : 0)
+                * RobotController.getBatteryVoltage();
+        m_drive.setVoltage(rightVolts, leftVolts);
     }
   }
 

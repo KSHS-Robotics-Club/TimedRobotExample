@@ -59,6 +59,10 @@ public class TankDrive {
     m_state = state;
   }
 
+  TankState getState() {
+    return m_state;
+  }
+
   void setSpeed(Double rightSpeed, Double leftSpeed) {
     m_rightSpeed = rightSpeed;
     m_leftSpeed = leftSpeed;
